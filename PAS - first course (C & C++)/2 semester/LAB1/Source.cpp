@@ -7,7 +7,6 @@ using namespace chrono;
 double sum_recursive(int n);
 double sum_iterative(int n);
 
-//Обчислення за допомогою рекурсії
 double sum_recursive(int n) {
     if (n == 1.0) {
         return 0.0;
@@ -16,7 +15,6 @@ double sum_recursive(int n) {
         return sum_recursive(n - 1) + (3.0 * n) / (n - 1) - n * n;
     }
 }
-//Обчислення за допомогою циклу
 double sum_iterative(int n) {
     double sum = 0.0;
     for (int i = 2; i <= n; i++) {
