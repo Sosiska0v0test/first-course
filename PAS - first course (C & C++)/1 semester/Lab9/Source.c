@@ -1,4 +1,4 @@
-//Лабораторна робота №9 "Рекурсивні алгоритми"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -12,91 +12,83 @@ void vyvid(int k, double s, double f, int n);
 double recursive(int* n, double x, double an, double eps, int k);
 
 int main() {
-	double eps,  // мінімальне граничне значення
-		x,       // змінна х
-		an,      // змінна для рекурентної формули
-		f,		 // точне значення функції
-		s;       // значення суми (приблизне)
-	int k,       // кількіть кроків
-		//ind,   // змінна для перевірки правельності вводу даних
-		n;       // лічільник кількості рукурсивних обрахунків 
-	char vidp;   // змінна для повторного виконання роботи
+	double eps,  
+		x,      
+		an,     
+		f,		
+		s;      
+	int k,       
+		n;      
+	char vidp;   
 	system("chcp 1251 & cls");
 	do {
-		printf("Функція:  e^x - 1\n");
-		printf("Ряд Е :  (x^(n+1))/(n+1)!\n");
+		printf("Г”ГіГ­ГЄГ¶ВіГї:  e^x - 1\n");
+		printf("ГђГїГ¤ Г… :  (x^(n+1))/(n+1)!\n");
 		vvid_x(&x);
 		vvid_eps(&eps);
 		vvid_k(&k);
 		s = fiter(x, eps, k, &n);
 		f = ftoch(x);
 		vyvid(k, s, f, n);
-		printf("\nПродовжувати роботу (Y - так)? ");
+		printf("\nГЏГ°Г®Г¤Г®ГўГ¦ГіГўГ ГІГЁ Г°Г®ГЎГ®ГІГі (Y - ГІГ ГЄ)? ");
 		while ((vidp = getchar()) == ' ' || vidp == '\n' || vidp == '\t');
 		fseek(stdin, 0, SEEK_END);
-	} while (vidp == 'Y' || vidp == 'y' || vidp == 'Т' || vidp == 'т');
+	} while (vidp == 'Y' || vidp == 'y' || vidp == 'Г’' || vidp == 'ГІ');
 	printf("\n\n");
 	system("pause");
 	return 0;
 }
-/* Введення значення x */
 void vvid_x(double* x) {
-	printf(" введіть x ");   //x - значення змінної
+	printf(" ГўГўГҐГ¤ВіГІГј x ");  
 	scanf_s("%lf", x);
 	fseek(stdin, 0, SEEK_END);
 	if (*x < -10 || *x > 10) {
-		printf("\tневірне значення x\n");
+		printf("\tГ­ГҐГўВіГ°Г­ГҐ Г§Г­Г Г·ГҐГ­Г­Гї x\n");
 		vvid_x(x);
 	}
 }
-/* Введення значення eps */
 void vvid_eps(double* eps) {
-	printf(" введіть eps ");  //порогове число
+	printf(" ГўГўГҐГ¤ВіГІГј eps "); 
 	scanf_s("%lf", eps);
 	fseek(stdin, 0, SEEK_END);
 	if (*eps <= 0) {
-		printf("\teps має бути >0\n");
+		printf("\teps Г¬Г Вє ГЎГіГІГЁ >0\n");
 		vvid_eps(eps);
 	}
 }
-/* Введення значення k */
 void vvid_k(int* k) {
-	printf(" введіть k ");    //кількість кроків
+	printf(" ГўГўГҐГ¤ВіГІГј k ");    
 	scanf_s("%i", k);
 	fseek(stdin, 0, SEEK_END);
 	if (*k < 0) {
-		printf("\tгранична кількість ітерацій має бути >0\n");
+		printf("\tГЈГ°Г Г­ГЁГ·Г­Г  ГЄВіГ«ГјГЄВіГ±ГІГј ВіГІГҐГ°Г Г¶ВіГ© Г¬Г Вє ГЎГіГІГЁ >0\n");
 		vvid_k(k);
 	}
 }
-/* Обчислення наближеного значення функції sin(x) */
 double fiter(double x, double eps, int k, int* n) {
-	*n = 0; // при n=0 перший член ряду a0=x, 
-	// початкове значення суми s=a0=x,
+	*n = 0; 
 	return x + recursive(n, x, x, eps, k);
 }
-// Рекурсивне обчислення значення функції
 double recursive(int* n, double x, double an, double eps, int k) {
-	double s; // накопичує результат обчислення
-	(*n)++;   // номер ітерації (рекурсивного виклику)
-	/* Обчислюються наступні члени ряду */
+	double s; 
+	(*n)++;  
+
 	an *= x / (*n + 1);
-	if (fabs(an) >= eps && (*n) < k)     // умова продовження рекурсії
-		s = recursive(n, x, an, eps, k); // рекурсивне звернення
+	if (fabs(an) >= eps && (*n) < k)    
+		s = recursive(n, x, an, eps, k); 
 	else
-		s = 0; // щоб при останньому зануренні повернути тільки an
+		s = 0; 
 	return s + an;
 }
 double ftoch(double x) {
 	return exp(x) - 1;
 }
-//Виведення результатів 
 void vyvid(int k, double s, double f, int n) {
 	if (n == k)
-		printf("досягнуто ліміту кількості ітерацій\n");
-	printf("\nрезультат:\n");
-	printf("  кількість ітерацій n = %d\n", n);
-	printf("  наближене значення функції s = %0.9f\n", s);
-	printf("  точне значення функції f = %0.9f\n", f);
-	printf("  похибка |f-s|= %0.9f\n", fabs(f - s));
+		printf("Г¤Г®Г±ГїГЈГ­ГіГІГ® Г«ВіГ¬ВіГІГі ГЄВіГ«ГјГЄГ®Г±ГІВі ВіГІГҐГ°Г Г¶ВіГ©\n");
+	printf("\nГ°ГҐГ§ГіГ«ГјГІГ ГІ:\n");
+	printf("  ГЄВіГ«ГјГЄВіГ±ГІГј ВіГІГҐГ°Г Г¶ВіГ© n = %d\n", n);
+	printf("  Г­Г ГЎГ«ГЁГ¦ГҐГ­ГҐ Г§Г­Г Г·ГҐГ­Г­Гї ГґГіГ­ГЄГ¶ВіВї s = %0.9f\n", s);
+	printf("  ГІГ®Г·Г­ГҐ Г§Г­Г Г·ГҐГ­Г­Гї ГґГіГ­ГЄГ¶ВіВї f = %0.9f\n", f);
+	printf("  ГЇГ®ГµГЁГЎГЄГ  |f-s|= %0.9f\n", fabs(f - s));
 }
