@@ -1,167 +1,50 @@
-#include <cstdlib>  
 #include <iostream>
-#include <chrono>  
-#include <windows.h>
+#include <chrono>
 
 using namespace std;
+using namespace chrono;
 
+double sum_recursive(int n);
+double sum_iterative(int n);
 
-void fillArray(int array[][10], int N) {
-    srand(time(NULL));
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            array[i][j] = rand() % 31 - 10;
-        }
+//Обчислення за допомогою рекурсії
+double sum_recursive(int n) {
+    if (n == 1.0) {
+        return 0.0;
+    }
+    else {
+        return sum_recursive(n - 1) + (3.0 * n) / (n - 1) - n * n;
     }
 }
-
-
-void printArray(int array[][10], int N) {
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            if (i <= j) {
-                cout << "\033[38;2;0;191;255m";
-            }
-            std::cout.width(3);
-            std::cout << array[i][j] << " ";
-            cout << "\033[0m";
-        }
-        cout << endl;
+//Обчислення за допомогою циклу
+double sum_iterative(int n) {
+    double sum = 0.0;
+    for (int i = 2; i <= n; i++) {
+        sum += (3.0 * i) / (i - 1) - i * i;
     }
+    return sum;
 }
-//+++++++++++++++++++++++++++++++++++++++++++++++
-//        Sorting algorithm by choice
-//+++++++++++++++++++++++++++++++++++++++++++++++
-
-void selectionSort(int array[10][10]) {
-    int N = 10;
-
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N - 1; j++) {
-            int max_idx = j;
-            if (i <= j) {
-                for (int k = j + 1; k < N; k++) {
-                    if (array[i][k] > array[i][max_idx]) {
-                        max_idx = k;
-                    }
-                }
-            }
-            if (max_idx != j) {
-                int temp = array[i][j];
-                array[i][j] = array[i][max_idx];
-                array[i][max_idx] = temp;
-            }
-        }
-    }
-}
-//++++++++++++++++++++++++++++++++++++++++++
-//          Shaker sorting
-//++++++++++++++++++++++++++++++++++++++++++
-void shakerSort(int array[10][10]) {
-    int N = 10;
-    int left = 0;
-    int right = N - 1;
-    bool isSwapped = true;
-
-    while (isSwapped) {
-        isSwapped = false;
-
-        for (int i = left; i < right; i++) {
-            for (int j = 0; j < N && j <= i; j++) { 
-                if (array[j][i] < array[j][i + 1]) {
-                    swap(array[j][i], array[j][i + 1]);
-                    isSwapped = true;
-                }
-            }
-        }
-
-        for (int i = right; i > left; i--) {
-            for (int j = 0; j < N && j <= i - 1; j++) {
-                if (array[j][i] > array[j][i - 1]) {
-                    swap(array[j][i], array[j][i - 1]);
-                    isSwapped = true;
-                }
-            }
-        }
-        left++;
-        right--;
-    }
-}
-
 
 int main() {
+   
+    int sum = 0;
 
-    srand(time(0)); 
+    int n;
+    std::cout << "Enter a value for 'n' --> ";
+    cin >> n;
 
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
+    auto start_time = std::chrono::steady_clock::now();
+    std::cout << "\nSum recursive = " << sum_recursive(n) << std::endl;
+    auto end_time = std::chrono::steady_clock::now();
+    auto time_recursive = duration_cast<nanoseconds>(end_time - start_time).count();
+    cout << "Time: " << time_recursive << " ns" << std::endl;
 
-    const int N = 10;
-    int array[N][N];
-    int iterations1 = 0;
-    int iterations2 = 0;
+    start_time = std::chrono::steady_clock::now();
+    std::cout << "\nSum non-recursive = " << sum_iterative(n) << std::endl;
+    end_time = std::chrono::steady_clock::now();
+    auto time_iterative = duration_cast<nanoseconds>(end_time - start_time).count();
 
+    cout << "Time: " << time_iterative << " ns" << endl;
 
-    int Method;
-    std::cout << "\t1. * Ñîðòóâàííÿ âèáîðîì  * \n\t";
-    std::cout << "2. * Øåéêåðíå ñîðòóâàííÿ * \n\t";
-    std::cout << "Îáåð³òü ìåòîä ñîðòóâàííÿ(1-2)--> ";
-    cin >> Method;
-
-    //***********************************************************************
-    //*****************       Selection sorting method      *****************
-    //***********************************************************************
-
-    if (Method == 1) {
-
-        auto start = std::chrono::high_resolution_clock::now();
-
-    
-        fillArray(array, N);
-
-       
-        cout << "Ïî÷àòêîâèé ìàñèâ:" << endl;
-        printArray(array, N);
-
-    
-        for (int i = 0; i < N / 2; i++) {
-            selectionSort(array);
-        }
-
-    
-        cout << "Ìîäèô³êîâàíèé ìàñèâ:" << endl;
-        printArray(array, N);
-
-        auto end = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
-        std::cout << "×àñ âèêîíàííÿ: " << duration << " íñ" << std::endl;
-
-    }
-
-    //***********************************************************************
-    //********************     Shaker sorting method     ********************
-    //***********************************************************************
-
-    if (Method == 2) {
-
-        auto start = std::chrono::high_resolution_clock::now();
-
-
-        fillArray(array, N);
-
-
-        cout << "Ïî÷àòêîâèé ìàñèâ:" << endl;
-        printArray(array, N);
-
-        shakerSort(array);
-
-        cout << "Ìîäèô³êîâàíèé ìàñèâ: " << endl;
-        printArray(array, N);
-
-        auto end = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
-        std::cout << "×àñ âèêîíàííÿ: " << duration << " íñ " << std::endl;
-
-    }
     return 0;
 }
