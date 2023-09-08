@@ -1,11 +1,11 @@
-#include <cstdlib>  // містить "srand()" і "rand()"
+#include <cstdlib>  
 #include <iostream>
-#include <chrono>   // Для вирахування часу
-#include <windows.h> // бібліотека для зміни кольору тексту в консолі
+#include <chrono>  
+#include <windows.h>
 
 using namespace std;
 
-// Функція для заповнення масиву випадковими числами
+
 void fillArray(int array[][10], int N) {
     srand(time(NULL));
     for (int i = 0; i < N; i++) {
@@ -15,7 +15,7 @@ void fillArray(int array[][10], int N) {
     }
 }
 
-// виведення масиву на екран
+
 void printArray(int array[][10], int N) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
@@ -30,7 +30,7 @@ void printArray(int array[][10], int N) {
     }
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++
-//          Алгоритм сортування вибором
+//        Sorting algorithm by choice
 //+++++++++++++++++++++++++++++++++++++++++++++++
 
 void selectionSort(int array[10][10]) {
@@ -55,7 +55,7 @@ void selectionSort(int array[10][10]) {
     }
 }
 //++++++++++++++++++++++++++++++++++++++++++
-//          Шейкерне сортування
+//          Shaker sorting
 //++++++++++++++++++++++++++++++++++++++++++
 void shakerSort(int array[10][10]) {
     int N = 10;
@@ -65,18 +65,18 @@ void shakerSort(int array[10][10]) {
 
     while (isSwapped) {
         isSwapped = false;
-        // з ліва на право
+
         for (int i = left; i < right; i++) {
-            for (int j = 0; j < N && j <= i; j++) { // обмежуємо цикл
+            for (int j = 0; j < N && j <= i; j++) { 
                 if (array[j][i] < array[j][i + 1]) {
                     swap(array[j][i], array[j][i + 1]);
                     isSwapped = true;
                 }
             }
         }
-        // з права на ліво
+
         for (int i = right; i > left; i--) {
-            for (int j = 0; j < N && j <= i - 1; j++) { // обмежуємо цикл
+            for (int j = 0; j < N && j <= i - 1; j++) {
                 if (array[j][i] > array[j][i - 1]) {
                     swap(array[j][i], array[j][i - 1]);
                     isSwapped = true;
@@ -91,7 +91,7 @@ void shakerSort(int array[10][10]) {
 
 int main() {
 
-    srand(time(0)); //генератор рандомних чисел
+    srand(time(0)); 
 
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
@@ -101,66 +101,66 @@ int main() {
     int iterations1 = 0;
     int iterations2 = 0;
 
-    // Комунікація з користувачем
+
     int Method;
-    std::cout << "\t1. * Сортування вибором  * \n\t";
-    std::cout << "2. * Шейкерне сортування * \n\t";
-    std::cout << "Оберіть метод сортування(1-2)--> ";
+    std::cout << "\t1. * Г‘Г®Г°ГІГіГўГ Г­Г­Гї ГўГЁГЎГ®Г°Г®Г¬  * \n\t";
+    std::cout << "2. * ГГҐГ©ГЄГҐГ°Г­ГҐ Г±Г®Г°ГІГіГўГ Г­Г­Гї * \n\t";
+    std::cout << "ГЋГЎГҐГ°ВіГІГј Г¬ГҐГІГ®Г¤ Г±Г®Г°ГІГіГўГ Г­Г­Гї(1-2)--> ";
     cin >> Method;
 
     //***********************************************************************
-    //*****************       Метод сортування вибором      *****************
+    //*****************       Selection sorting method      *****************
     //***********************************************************************
 
     if (Method == 1) {
 
         auto start = std::chrono::high_resolution_clock::now();
 
-        // Заповнення масиву випадковими числами
+    
         fillArray(array, N);
 
-        // Виведення початкового масиву на екран
-        cout << "Початковий масив:" << endl;
+       
+        cout << "ГЏГ®Г·Г ГІГЄГ®ГўГЁГ© Г¬Г Г±ГЁГў:" << endl;
         printArray(array, N);
 
-        // сортування за спаданням
+    
         for (int i = 0; i < N / 2; i++) {
             selectionSort(array);
         }
 
-        // Виведення модифікованого масиву на екран
-        cout << "Модифікований масив:" << endl;
+    
+        cout << "ГЊГ®Г¤ГЁГґВіГЄГ®ГўГ Г­ГЁГ© Г¬Г Г±ГЁГў:" << endl;
         printArray(array, N);
 
         auto end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
-        std::cout << "Час виконання: " << duration << " нс" << std::endl;
+        std::cout << "Г—Г Г± ГўГЁГЄГ®Г­Г Г­Г­Гї: " << duration << " Г­Г±" << std::endl;
 
     }
 
     //***********************************************************************
-    //****************     Методом шейкерного сортування     ****************
+    //********************     Shaker sorting method     ********************
     //***********************************************************************
 
     if (Method == 2) {
 
         auto start = std::chrono::high_resolution_clock::now();
 
-        // Заповнення масиву випадковими числами
+
         fillArray(array, N);
 
-        // Виведення початкового масиву на екран
-        cout << "Початковий масив:" << endl;
+
+        cout << "ГЏГ®Г·Г ГІГЄГ®ГўГЁГ© Г¬Г Г±ГЁГў:" << endl;
         printArray(array, N);
 
         shakerSort(array);
 
-        cout << "Модифікований масив: " << endl;
+        cout << "ГЊГ®Г¤ГЁГґВіГЄГ®ГўГ Г­ГЁГ© Г¬Г Г±ГЁГў: " << endl;
         printArray(array, N);
 
         auto end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
-        std::cout << "Час виконання: " << duration << " нс " << std::endl;
+        std::cout << "Г—Г Г± ГўГЁГЄГ®Г­Г Г­Г­Гї: " << duration << " Г­Г± " << std::endl;
 
     }
     return 0;
